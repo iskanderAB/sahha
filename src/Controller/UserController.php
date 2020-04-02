@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,16 +18,23 @@ class UserController extends AbstractController
     /**
      * @Route("/api/add/user",methods={"POST"})
      */
-    public function addUser(Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function addUser(Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $manager): Response
     {
 
-        $response = new Response();
         $data = $request->getContent();
         try {
             $user = $serializer->deserialize($data, User::class, "json");
             $password = $user->getPassword();
             $user->setPassword($passwordEncoder->encodePassword($user, $password));
-            dd($user);
+
+            $manager->persist($user);
+            $manager->flush();
+
+            return $this->json([
+               "message"=>"user created",
+               "status" => 201
+            ], 201);
+
         } catch (NotEncodableValueException $exception) {
 
             return $this->json([
@@ -35,6 +43,5 @@ class UserController extends AbstractController
             ], 400);
         }
 
-        return $response;
     }
 }
