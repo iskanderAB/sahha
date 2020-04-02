@@ -24,3 +24,6 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_DOCTOR: ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_DOCTOR

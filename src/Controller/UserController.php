@@ -26,14 +26,13 @@ class UserController extends AbstractController
             $user = $serializer->deserialize($data, User::class, "json");
             $password = $user->getPassword();
             $user->setPassword($passwordEncoder->encodePassword($user, $password));
+            dd($user);
         } catch (NotEncodableValueException $exception) {
 
             return $this->json([
                 "status" => 400,
                 "message" => $exception->getMessage()
-            ],
-                400
-            );
+            ], 400);
         }
 
         return $response;
