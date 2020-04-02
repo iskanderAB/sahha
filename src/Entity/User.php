@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -14,16 +17,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"Read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"Read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"Read"})
      */
     
     private $roles = [];
@@ -36,36 +42,43 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Read"})
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"Read"})
      */
     private $Birthday;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"Read"})
      */
     private $Gouvernorate;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"Read"})
      */
     private $Gender;
 
     /**
      * @ORM\Column(type="integer", nullable=true, length=8)
+     * @Groups({"Read"})
      */
     private $PhoneNumber;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Read"})
      */
     private $Address;
 
@@ -171,12 +184,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
+    public function getBirthday(): ?string
     {
         return $this->Birthday;
     }
 
-    public function setBirthday(?\DateTimeInterface $Birthday): self
+    public function setBirthday(?string $Birthday): self
     {
         $this->Birthday = $Birthday;
 
