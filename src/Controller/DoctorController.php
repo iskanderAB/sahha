@@ -14,12 +14,12 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UserController extends AbstractController
+class DoctorController extends AbstractController
 {
     /**
-     * @Route("/api/add/user",name="add_user",methods={"POST"})
+     * @Route("/api/doctor/add",name="add_doctor",methods={"POST"})
      */
-    public function addUser (Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function addDoctor (Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
 
         $data = $request->getContent();
@@ -54,15 +54,36 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/users",name="get_users",methods={"GET"})
+     * @Route("/api/doctor/{id}",name="get_doctor",methods={"GET"})
      */
-    public function getUsers(UserRepository $userRepository,SerializerInterface $serializer){
-        $users = $userRepository->findAll();
-        $userJson = $serializer->serialize($users,'json',["groups" => "Read"]);
-        return new Response(
-            $userJson, 200, [
-                "content-type" => "application/json"
-            ]
-        );
+    public function getDoctors($id,UserRepository $userRepository){
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if(!$user){
+            return $this->json([
+                "status" => 404,
+                "message" =>"Doctor not found !",
+            ],404);
+        }
+        return $this->json($user,200,[],["groups" => "Read"]);
+    }
+
+    /**
+     * @Route("/api/doctor/{id}",name="delete_doctor",methods={"DELETE"})
+     */
+    public function deleteDoctor($id,UserRepository $userRepository,EntityManagerInterface $manager){
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if(!$user){
+            return $this->json([
+                "status" => 404,
+                "message" =>"Doctor not found !",
+            ],404);
+        }
+        $manager->remove($user);
+        $manager->flush();
+
+        return $this->json([
+            "status" => 201,
+            "message" => "Doctor deleted "
+        ],201);
     }
 }
