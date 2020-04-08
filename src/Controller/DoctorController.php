@@ -28,17 +28,17 @@ class DoctorController extends AbstractController
             $tokenDecoder = new TokenDecoder($request);
             $roles = $tokenDecoder->getRoles();
 
-            if (!in_array("ROLE_SUPER_ADMIN",$roles)){
+            if (!in_array('ROLE_SUPER_ADMIN',$roles)){
                 return $this->json([
-                    "message" => "Access Denied !",
-                    "status" => 403
+                    'message' => 'Access Denied !',
+                    'status' => 403
                 ],403);
             }
 
-            $user = $serializer->deserialize($data, User::class, "json");
+            $user = $serializer->deserialize($data, User::class, 'json');
             $password = $user->getPassword();
             $user->setPassword($passwordEncoder->encodePassword($user, $password));
-            $user->setRoles(["ROLE_SUPER_ADMIN"]);
+            $user->setRoles(['ROLE_SUPER_ADMIN']);
 
             $error = $validator->validate($user);
 
@@ -50,15 +50,15 @@ class DoctorController extends AbstractController
             $manager->flush();
 
             return $this->json([
-               "message"=>"user created",
-               "status" => 201
+               'message' => 'user created',
+               'status' => 201
             ], 201);
 
         } catch (NotEncodableValueException $exception) {
 
             return $this->json([
-                "status" => 400,
-                "message" => $exception->getMessage()
+                'status' => 400,
+                'message' => $exception->getMessage()
             ], 400);
         }
 
@@ -67,53 +67,69 @@ class DoctorController extends AbstractController
     /**
      * @Route("/api/doctor/{id}",name="get_doctor",methods={"GET"})
      */
-    public function getDoctors($id,UserRepository $userRepository,Request $request){
+    public function getDoctor ($id,UserRepository $userRepository,Request $request){
 
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user){
             return $this->json([
-                "status" => 404,
-                "message" =>"User not found !",
+                'status' => 404,
+                'message' => 'User not found !',
             ],404);
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
 
-        if (!in_array("ROLE_SUPER_ADMIN",$roles)){
+        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
             return $this->json([
-                "message" => "Access Denied !",
-                "status" => 403
+                'message' => 'Access Denied !',
+                'status' => 403
             ],403);
         }
 
-        return $this->json($user,200,[],["groups" => "Read"]);
+        return $this->json($user,200,[],['groups' => 'Read']);
     }
 
     /**
      * @Route("/api/doctor/{id}",name="delete_doctor",methods={"DELETE"})
      */
-    public function deleteDoctor($id,UserRepository $userRepository,EntityManagerInterface $manager,Request $request){
+    public function deleteDoctor ($id,UserRepository $userRepository,EntityManagerInterface $manager,Request $request){
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user){
             return $this->json([
-                "status" => 404,
-                "message" =>"Doctor not found !",
+                'status' => 404,
+                'message' => 'Doctor not found !',
             ],404);
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
-        if (!in_array("ROLE_SUPER_ADMIN",$roles)){
+        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
             return $this->json([
-                "message" => "Access Denied !",
-                "status" => 403
+                'message' => 'Access Denied !',
+                'status' => 403
             ],403);
         }
         $manager->remove($user);
         $manager->flush();
 
         return $this->json([
-            "status" => 201,
-            "message" => "Doctor deleted "
+            'status' => 201,
+            'message' => 'Doctor deleted '
         ],201);
+    }
+
+    /**
+     * @Route("/api/doctors",name="get_doctors",methods={"GET"})
+     */
+    public function getDoctors (Request $request,UserRepository $userRepository){
+        $tokenDecoder = new TokenDecoder($request);
+        $roles = $tokenDecoder->getRoles();
+        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
+            return $this->json([
+                'message' => 'Access Denied !',
+                'status' => 403
+            ],403);
+        }
+        $users = $userRepository->findUsersByRole('ROLE_DOCTOR');
+        return $this->json($users,200,[],['groups' => 'Read']);
     }
 }
