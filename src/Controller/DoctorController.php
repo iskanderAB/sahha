@@ -24,21 +24,18 @@ class DoctorController extends AbstractController
     {
         $data = $request->getContent();
         try {
-
             $tokenDecoder = new TokenDecoder($request);
             $roles = $tokenDecoder->getRoles();
-
-            if (!in_array('ROLE_SUPER_ADMIN',$roles)){
+            if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
                 return $this->json([
                     'message' => 'Access Denied !',
                     'status' => 403
                 ],403);
             }
-
             $user = $serializer->deserialize($data, User::class, 'json');
             $password = $user->getPassword();
             $user->setPassword($passwordEncoder->encodePassword($user, $password));
-            $user->setRoles(['ROLE_SUPER_ADMIN']);
+            $user->setRoles(['ROLE_DOCTOR']);
 
             $error = $validator->validate($user);
 
@@ -61,7 +58,6 @@ class DoctorController extends AbstractController
                 'message' => $exception->getMessage()
             ], 400);
         }
-
     }
 
     /**
@@ -79,7 +75,7 @@ class DoctorController extends AbstractController
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
 
-        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
+        if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
                 'status' => 403
@@ -102,7 +98,7 @@ class DoctorController extends AbstractController
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
-        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
+        if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
                 'status' => 403
@@ -123,13 +119,13 @@ class DoctorController extends AbstractController
     public function getDoctors (Request $request,UserRepository $userRepository){
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
-        if (!in_array('ROLE_SUPER_ADMIN',$roles)){
+        if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
                 'status' => 403
             ],403);
         }
         $users = $userRepository->findUsersByRole('ROLE_DOCTOR');
-        return $this->json($users,200,[],['groups' => 'Read']);
+        return $this->json($users,RESPONSE::HTTP_OK,[],['groups' => 'Read']);
     }
 }

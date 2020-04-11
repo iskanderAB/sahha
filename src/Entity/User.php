@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -92,10 +94,21 @@ class User implements UserInterface
     private $PhoneNumber;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"Read"})
      */
     private $Address;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Survey", mappedBy="createdBy",cascade={"persist"})
+     */
+    private $surveys;
+
+    public function __construct()
+    {
+        $this->surveys = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -131,7 +144,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+//        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -255,6 +268,37 @@ class User implements UserInterface
     public function setAddress(?string $Address): self
     {
         $this->Address = $Address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Survey[]
+     */
+    public function getSurveys(): Collection
+    {
+        return $this->surveys;
+    }
+
+    public function addSurvey(Survey $survey): self
+    {
+        if (!$this->surveys->contains($survey)) {
+            $this->surveys[] = $survey;
+            $survey->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSurvey(Survey $survey): self
+    {
+        if ($this->surveys->contains($survey)) {
+            $this->surveys->removeElement($survey);
+            // set the owning side to null (unless already changed)
+            if ($survey->getCreatedBy() === $this) {
+                $survey->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }

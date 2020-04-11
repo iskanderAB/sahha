@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
  */
-class Answer
+class Question
 {
     /**
      * @ORM\Id()
@@ -24,7 +24,12 @@ class Answer
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $answer;
+    private $response;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Survey", inversedBy="question")
+     */
+    private $survey;
 
     public function getId(): ?int
     {
@@ -43,14 +48,26 @@ class Answer
         return $this;
     }
 
-    public function getAnswer(): ?string
+    public function getResponse(): ?string
     {
-        return $this->answer;
+        return $this->response;
     }
 
-    public function setAnswer(?string $answer): self
+    public function setResponse(?string $response): self
     {
-        $this->anwser = $answer;
+        $this->response = $response;
+
+        return $this;
+    }
+
+    public function getSurvey(): ?Survey
+    {
+        return $this->survey;
+    }
+
+    public function setSurvey(?Survey $survey): self
+    {
+        $this->survey = $survey;
 
         return $this;
     }
