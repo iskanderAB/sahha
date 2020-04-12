@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PatientsController extends AbstractController
+class UsersController extends AbstractController
 {
     /**
-     * @Route("/api/patients/{id}",name="get_patient",methods={"GET"})
+     * @Route("/api/users/{id}",name="get_user",methods={"GET"})
      */
-    public function getPatientsById ($id,Request $request,UserRepository $userRepository){
+    public function getUserById ($id,Request $request,UserRepository $userRepository){
 
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user || in_array('ROLE_DOCTOR',$user->getRoles(),true) || in_array('ROLE_SUPER_ADMIN',$user->getRoles(),true)){
@@ -43,13 +43,12 @@ class PatientsController extends AbstractController
     }
 
     /**
-     * @Route("/api/patients/add",name="add_patients",methods={"POST"})
+     * @Route("/api/users/add",name="add_user",methods={"POST"})
      */
-    public function addPatients (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer){
+    public function addUser (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer){
 
         $data = $request->getContent();
         try {
-
             $tokenDecoder = new TokenDecoder($request);
             $roles = $tokenDecoder->getRoles();
 
@@ -89,9 +88,9 @@ class PatientsController extends AbstractController
     }
 
     /**
-     * @Route("/api/patients/{id}",name="delete_patients",methods={"DELETE"})
+     * @Route("/api/users/{id}",name="delete_users",methods={"DELETE"})
      */
-    public function deletePatients ($id,Request $request,UserRepository $userRepository,EntityManagerInterface $manager){
+    public function deleteUser ($id,Request $request,UserRepository $userRepository,EntityManagerInterface $manager){
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user || in_array('ROLE_DOCTOR',$user->getRoles(),true) || in_array('ROLE_SUPER_ADMIN',$user->getRoles(),true)){
             return $this->json([
@@ -112,14 +111,14 @@ class PatientsController extends AbstractController
 
         return $this->json([
             'status' => 201,
-            'message' => 'Patients deleted '
+            'message' => 'User deleted '
         ],201);
     }
 
     /**
-     * @Route("/api/patients",name="get_patients",methods={"GET"})
+     * @Route("/api/users",name="get_users",methods={"GET"})
      */
-    public function getPatients (UserRepository $userRepository,Request $request){
+    public function getUsers (UserRepository $userRepository,Request $request){
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
         if (!in_array('ROLE_SUPER_ADMIN',$roles,true) && !in_array('ROLE_DOCTOR',$roles,true)){
@@ -128,7 +127,7 @@ class PatientsController extends AbstractController
                 'status' => 403
             ],403);
         }
-        $patients = $userRepository->findUsersByRole('ROLE_USER');
-        return $this->json($patients, 200, [], ['groups' => 'Read']);
+        $users = $userRepository->findUsersByRole('ROLE_USER');
+        return $this->json($users, 200, [], ['groups' => 'Read']);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Survey;
+use App\Repository\SurveyRepository;
 use App\Repository\UserRepository;
 use App\Services\TokenDecoder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,5 +48,57 @@ class SurveyController extends AbstractController
                 'message' => $exception->getMessage()
             ], 400);
         }
+    }
+
+    /**
+     * @Route("/api/surveys",name="get_surveys",methods={"GET"})
+     */
+    public function getSurveys (Request $request,SurveyRepository $surveyRepository,SerializerInterface $serializer){
+        $data = $request->getContent();
+        try {
+            $tokenDecoder = new TokenDecoder($request);
+            $roles = $tokenDecoder->getRoles();
+            if(!in_array('ROLE_USER',$roles,true)){
+                return $this->json([
+                    'status' => 401,
+                    'message' => 'Access denied'
+                ],401);
+            }
+            $surveys = $surveyRepository->findAll();
+            return $this->json($surveys,200, [], ['groups' => 'read_survey']);
+        }catch (NotEncodableValueException $exception){
+            return $this->json([
+                'status' => 400,
+                'message' => $exception->getMessage()
+            ],400);
+        }
+    }
+
+    /**
+     * @Route("/api/survey/delete/{id}",name="delete",methods={"DELETE"})
+     */
+    public function deleteSurvey ($id,Request $request,SurveyRepository $surveyRepository,EntityManagerInterface $manager){
+        $data = $request->getContent();
+        $survey = $surveyRepository->findOneBy(['id' => $id]);
+        if(!$survey){
+            return $this->json([
+                'status' => 404,
+                'message' => 'page not found !'
+            ],404);
+        }
+        $tokenDecoder = new TokenDecoder($request);
+        $roles = $tokenDecoder->getRoles();
+        if(in_array('ROLE_USER',$roles,true) || in_array('ROLE_DOCTOR',$roles,true)){
+            return $this->json([
+                'status' => 401,
+                'message' => 'Access denied'
+            ],401);
+        }
+        $manager->remove($survey);
+        $manager->flush();
+        return $this->json([
+            'status' => 201,
+            'message' => 'Survey deleted'
+        ],201);
     }
 }

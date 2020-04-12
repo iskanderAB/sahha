@@ -128,4 +128,35 @@ class DoctorController extends AbstractController
         $users = $userRepository->findUsersByRole('ROLE_DOCTOR');
         return $this->json($users,RESPONSE::HTTP_OK,[],['groups' => 'Read']);
     }
+
+    /**
+     * @Route("/api/doctor/{id}",name="edit_doctor",name="{"PUT"})
+     */
+    public function editDoctor ($id,Request $request,UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if(!$user){
+            return $this->json([
+                'status' => 404,
+                'message' => 'User not found'
+            ],404);
+        }
+        $data = $request->getContent();
+        try {
+            $tokenDecoder = new TokenDecoder($request);
+            $tokenEmail = $tokenDecoder->getEmail();
+            if($tokenEmail !== $user->getEmail()){
+                return $this->json([
+                    'status' => 401,
+                    'message' => 'Access Denied'
+                ],401);
+            }
+            
+        }catch (NotEncodableValueException $exception){
+            return $this->json([
+                'status' => 400,
+                'message' => $exception->getMessage()
+            ],400);
+        }
+    }
 }

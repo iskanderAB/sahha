@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SurveyRepository")
@@ -15,21 +16,25 @@ class Survey
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read_survey"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read_survey"})
      */
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="survey",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="survey",cascade={"persist","remove"},orphanRemoval=true)
+     * @Groups({"read_survey"})
      */
     private $questions;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="surveys")
+     * @Groups({"read_survey"})
      */
     private $createdBy;
 

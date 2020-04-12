@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"Read"})
+     * @Groups({"Read","read_survey"})
      */
     private $id;
 
@@ -29,7 +29,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
      * @Assert\NotBlank()
-     * @Groups({"Read"})
+     * @Groups({"Read","read_survey"})
      */
     private $email;
 
@@ -51,14 +51,14 @@ class User implements UserInterface
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read"})
+     * @Groups({"Read","read_survey"})
      */
     private $firstName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read"})
+     * @Groups({"Read","read_survey"})
      */
     private $lastName;
 
