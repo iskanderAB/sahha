@@ -38,6 +38,11 @@ class Survey
      */
     private $createdBy;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $feedback;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -99,6 +104,18 @@ class Survey
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getFeedback(): ?string
+    {
+        return $this->feedback;
+    }
+
+    public function setFeedback(?string $feedback): self
+    {
+        $this->feedback = $feedback;
 
         return $this;
     }

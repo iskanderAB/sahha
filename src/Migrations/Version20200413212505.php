@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200411144434 extends AbstractMigration
+final class Version20200413212505 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,7 +23,7 @@ final class Version20200411144434 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE question CHANGE survey_id survey_id INT DEFAULT NULL, CHANGE title title VARCHAR(255) DEFAULT NULL, CHANGE response response VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE survey CHANGE created_by_id created_by_id INT DEFAULT NULL, CHANGE created_at created_at VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE survey ADD feedback VARCHAR(255) DEFAULT NULL, CHANGE created_by_id created_by_id INT DEFAULT NULL, CHANGE created_at created_at VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL, CHANGE first_name first_name VARCHAR(100) DEFAULT NULL, CHANGE last_name last_name VARCHAR(100) DEFAULT NULL, CHANGE birthday birthday VARCHAR(50) DEFAULT NULL, CHANGE gouvernorate gouvernorate VARCHAR(50) DEFAULT NULL, CHANGE gender gender VARCHAR(1) DEFAULT NULL, CHANGE phone_number phone_number INT DEFAULT NULL, CHANGE address address VARCHAR(255) DEFAULT NULL');
     }
 
@@ -33,7 +33,7 @@ final class Version20200411144434 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE question CHANGE survey_id survey_id INT DEFAULT NULL, CHANGE title title VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE response response VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`');
-        $this->addSql('ALTER TABLE survey CHANGE created_by_id created_by_id INT DEFAULT NULL, CHANGE created_at created_at VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE survey DROP feedback, CHANGE created_by_id created_by_id INT DEFAULT NULL, CHANGE created_at created_at VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE user CHANGE roles roles LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_bin`, CHANGE first_name first_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE last_name last_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE birthday birthday VARCHAR(50) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE gouvernorate gouvernorate VARCHAR(50) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE gender gender VARCHAR(1) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`, CHANGE phone_number phone_number INT DEFAULT NULL, CHANGE address address VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT \'NULL\' COLLATE `utf8mb4_unicode_ci`');
     }
 }

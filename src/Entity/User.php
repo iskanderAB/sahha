@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"})
  */
-class User implements UserInterface
+class User implements UserInterface,JWTUserInterface
 {
     /**
      * @ORM\Id()
@@ -108,6 +109,11 @@ class User implements UserInterface
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
+
+//        $this->username = $username;
+//        $this->roles = $roles;
+//        $this->email = $email;
+
     }
 
     public function getId(): ?int
@@ -301,5 +307,16 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function createFromPayload($email, array $payload)
+    {
+        return new self(
+            $payload['roles'], // Added by default
+            $payload['email']  // Custom
+        );
     }
 }

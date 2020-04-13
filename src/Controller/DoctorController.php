@@ -128,10 +128,11 @@ class DoctorController extends AbstractController
         $users = $userRepository->findUsersByRole('ROLE_DOCTOR');
         return $this->json($users,RESPONSE::HTTP_OK,[],['groups' => 'Read']);
     }
-
+    /*
     /**
      * @Route("/api/doctor/{id}",name="edit_doctor",name="{"PUT"})
      */
+    /*
     public function editDoctor ($id,Request $request,UserRepository $userRepository)
     {
         $user = $userRepository->findOneBy(['id' => $id]);
@@ -158,5 +159,5 @@ class DoctorController extends AbstractController
                 'message' => $exception->getMessage()
             ],400);
         }
-    }
+    }*/
 }
