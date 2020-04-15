@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="card-header">
+        <h5 class="card-title">Questions</h5>
+        <p class="card-category">hello folen foulani </p>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class=" text-primary">
+            <th>
+                Questions:
+            </th>
+            <th>
+            </th>
+            </thead>
+            <tbody>
+            {% for user in users  %}
+                {%  for survey in user.surveys %}
+            <tr>
+                <td colspan="4" style="border-bottom:0px #ffffff "> Question 1 :</td>
+            </tr>
+            <tr>
+                <td>
+                    {{survey.feedback}}
+                </td>
+                <td style="text-align: right">
+                    {% if survey.answer == null  %}
+                    <i class="nc-icon nc-sound-wave"></i>
+                    <a class="btn btn-sm btn-danger" href="{{ path('DoctorAnswer',{'id':survey.id}) }}" style="border-radius: 100px; background-color: #cc0b00;color: white;">répondre</a>
+                    {% else %}
+                        <img src="/assets/img/shield.svg" width="40">
+                    {% endif %}
+                </td>
+            </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

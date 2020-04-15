@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+                    <div class="table-responsive">
+                        <table class="table table-hover ">
+                            <thead class=" text-primary">
+                            <th>
+                                patients
+                            </th>
+                            <th>
+
+                            </th>
+                            </thead>
+                            <tbody>
+                            {% for answer in answers  %}
+                            <tr class="no-hovred">
+                                <td  style="border-bottom:0px #ffffff "> Patients {{ loop.index }} :  </td>
+                                <td  style="border-bottom:0px #ffffff ; text-align: right"><strong class="mr-1">{{answer.survey.createdBy.lastname}}</strong>{{answer.survey.createdBy.firstName}}</td>
+                            </tr>
+
+                            <tr>
+
+                                <td colspan="2">
+                                    <a href="{{ path('DoctorAnswer',{'id':answer.survey.id}) }}" style="color:black">
+                                    {% for question in answer.survey.questions %}
+                                        <div class="block"><img src='{% if question.response == "yes" %}/assets/img/tick.svg {% else %}/assets/img/cancel.svg{% endif %}' width="10"> {{ question.title }}</div>
+                                    {% endfor %}
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+{% endblock  %}

@@ -43,7 +43,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/api/users/add",name="add_user",methods={"POST"})
+         * @Route("/api/users/add",name="add_user",methods={"POST"})
      */
     public function addUser (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer){
 
@@ -100,7 +100,7 @@ class UsersController extends AbstractController
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
-        if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
+            if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
                 'status' => 403

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Answer{% endblock %}
+
+{% block body %}
+    <h3>Advices</h3>
+    {% for question in survey.questions %}
+    <div class="block"><img src='{% if question.response == "yes" %}/assets/img/tick.svg {% else %}/assets/img/cancel.svg{% endif %}' width="10"> {{ question.title }}</div>
+
+  {% endfor %}
+    <div class="row feedback">
+        <p>feedback : </p>
+        <p class="text-dark pl-1">{{ survey.feedback }}</p>
+    </div>
+    {{ include('answer/_form.html.twig') }}
+    <a href="{{ path('answer_index') }}">back to list</a>
+{% endblock %}

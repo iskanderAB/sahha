@@ -37,11 +37,15 @@ class Survey
      * @Groups({"read_survey"})
      */
     private $createdBy;
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $feedback;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Answer", mappedBy="survey", cascade={"persist", "remove"})
+     */
+    private $answer;
 
     public function __construct()
     {
@@ -79,7 +83,6 @@ class Survey
             $this->questions[] = $question;
             $question->setSurvey($this);
         }
-
         return $this;
     }
 
@@ -117,6 +120,23 @@ class Survey
     {
         $this->feedback = $feedback;
 
+        return $this;
+    }
+
+    public function getAnswer(): ?Answer
+    {
+        return $this->answer;
+    }
+
+    public function setAnswer(?Answer $answer): self
+    {
+        $this->answer = $answer;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newSurvey = null === $answer ? null : $this;
+        if ($answer->getSurvey() !== $newSurvey) {
+            $answer->setSurvey($newSurvey);
+        }
         return $this;
     }
 }
