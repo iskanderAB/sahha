@@ -34,6 +34,7 @@ security:
 
         main:
             anonymous: lazy
+            stateless: false
             provider: app_user_provider
             guard:
                 authenticators:
