@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SurveysController extends AbstractController
 {
     /**
-     * @Route("/Api/survey/add",name="add_survey",methods={"POST"})
+     * @Route("/api/survey/add",name="add_survey",methods={"POST"})
      */
     public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager){
         $data = $request->getContent();
@@ -51,7 +51,7 @@ class SurveysController extends AbstractController
     }
 
     /**
-     * @Route("/Api/surveys",name="get_surveys",methods={"GET"})
+     * @Route("/api/surveys",name="get_surveys",methods={"GET"})
      */
     public function getSurveys (Request $request,SurveyRepository $surveyRepository,SerializerInterface $serializer){
         $data = $request->getContent();
@@ -75,7 +75,7 @@ class SurveysController extends AbstractController
     }
 
     /**
-     * @Route("/Api/survey/delete/{id}",name="delete",methods={"DELETE"})
+     * @Route("/api/survey/delete/{id}",name="delete",methods={"DELETE"})
      */
     public function deleteSurvey ($id,Request $request,SurveyRepository $surveyRepository,EntityManagerInterface $manager){
         $data = $request->getContent();

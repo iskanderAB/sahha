@@ -19,12 +19,12 @@ security:
             security: false
 
         api:
-            pattern:   ^/Api
+            pattern:   ^/api
             stateless: true
             anonymous: true
             provider: jwt
             json_login:
-                check_path: /Api/login
+                check_path: /api/login
                 username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -45,5 +45,5 @@ security:
                 # target: app_any_route
 
     access_control:
-        - { path: ^/Api/login,         roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/Api,               roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/login,         roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,               roles: IS_AUTHENTICATED_FULLY }
