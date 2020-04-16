@@ -106,9 +106,15 @@ class User implements UserInterface,JWTUserInterface
      */
     private $surveys;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="fromDoctor")
+     */
+    private $content;
+
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
+        $this->content = new ArrayCollection();
 
 //        $this->username = $username;
 //        $this->roles = $roles;
@@ -318,5 +324,36 @@ class User implements UserInterface,JWTUserInterface
             $payload['roles'], // Added by default
             $payload['email']  // Custom
         );
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getContent(): Collection
+    {
+        return $this->content;
+    }
+
+    public function addContent(Answer $content): self
+    {
+        if (!$this->content->contains($content)) {
+            $this->content[] = $content;
+            $content->setFromDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContent(Answer $content): self
+    {
+        if ($this->content->contains($content)) {
+            $this->content->removeElement($content);
+            // set the owning side to null (unless already changed)
+            if ($content->getFromDoctor() === $this) {
+                $content->setFromDoctor(null);
+            }
+        }
+
+        return $this;
     }
 }

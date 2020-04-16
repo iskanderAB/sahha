@@ -59,7 +59,6 @@ class DoctorController extends AbstractController
             ], 400);
         }
     }
-
     /**
      * @Route("/api/doctor/{id}",name="get_doctor",methods={"GET"})
      */
@@ -74,7 +73,6 @@ class DoctorController extends AbstractController
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
-
         if (!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
@@ -84,7 +82,6 @@ class DoctorController extends AbstractController
 
         return $this->json($user,200,[],['groups' => 'Read']);
     }
-
     /**
      * @Route("/api/doctor/{id}",name="delete_doctor",methods={"DELETE"})
      */

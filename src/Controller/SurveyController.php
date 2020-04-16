@@ -1,104 +1,94 @@
 <?php
 
-
 namespace App\Controller;
 
-
 use App\Entity\Survey;
+use App\Form\SurveyType;
 use App\Repository\SurveyRepository;
-use App\Repository\UserRepository;
-use App\Services\TokenDecoder;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Exception\NotEncodableValueException;
-use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @Route("/survey")
+ */
 class SurveyController extends AbstractController
 {
     /**
-     * @Route("/api/survey/add",name="add_survey",methods={"POST"})
+     * @Route("/", name="survey_index", methods={"GET"})
      */
-    public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager){
-        $data = $request->getContent();
-        try {
-            $tokenDecoder = new TokenDecoder($request);
-            $roles = $tokenDecoder->getRoles();
-            if (!in_array('ROLE_USER',$roles,true)){
-                return $this->json([
-                    'message' => 'Access Denied !',
-                    'status' => 403
-                ],403);
-            }
-            $survey = $serializer->deserialize($data,Survey::class,'json');
-            $email = $tokenDecoder->getEmail();
-            $user = $userRepository->findOneBy(['email' => $email]);
-            $survey->setCreatedBy($user);
-            $manager->persist($survey);
-            $manager->flush();
-            return $this->json([
-                'status' => 201,
-                'message' => 'Survey created'
-            ],201);
-
-        }catch (NotEncodableValueException $exception){
-            return $this->json([
-                'status' => 400,
-                'message' => $exception->getMessage()
-            ], 400);
-        }
+    public function index(SurveyRepository $surveyRepository): Response
+    {
+        return $this->render('survey/index.html.twig', [
+            'surveys' => $surveyRepository->findAll(),
+        ]);
     }
 
     /**
-     * @Route("/api/surveys",name="get_surveys",methods={"GET"})
+     * @Route("/new", name="survey_new", methods={"GET","POST"})
      */
-    public function getSurveys (Request $request,SurveyRepository $surveyRepository,SerializerInterface $serializer){
-        $data = $request->getContent();
-        try {
-            $tokenDecoder = new TokenDecoder($request);
-            $roles = $tokenDecoder->getRoles();
-            if(!in_array('ROLE_USER',$roles,true)){
-                return $this->json([
-                    'status' => 401,
-                    'message' => 'Access denied'
-                ],401);
-            }
-            $surveys = $surveyRepository->findAll();
-            return $this->json($surveys,200, [], ['groups' => 'read_survey']);
-        }catch (NotEncodableValueException $exception){
-            return $this->json([
-                'status' => 400,
-                'message' => $exception->getMessage()
-            ],400);
+    public function new(Request $request): Response
+    {
+        $survey = new Survey();
+        $form = $this->createForm(SurveyType::class, $survey);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($survey);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('survey_index');
         }
+
+        return $this->render('survey/new.html.twig', [
+            'survey' => $survey,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
-     * @Route("/api/survey/delete/{id}",name="delete",methods={"DELETE"})
+     * @Route("/{id}", name="survey_show", methods={"GET"})
      */
-    public function deleteSurvey ($id,Request $request,SurveyRepository $surveyRepository,EntityManagerInterface $manager){
-        $data = $request->getContent();
-        $survey = $surveyRepository->findOneBy(['id' => $id]);
-        if(!$survey){
-            return $this->json([
-                'status' => 404,
-                'message' => 'page not found !'
-            ],404);
+    public function show(Survey $survey): Response
+    {
+        return $this->render('survey/show.html.twig', [
+            'survey' => $survey,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="survey_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Survey $survey): Response
+    {
+        $form = $this->createForm(SurveyType::class, $survey);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('survey_index');
         }
-        $tokenDecoder = new TokenDecoder($request);
-        $roles = $tokenDecoder->getRoles();
-        if(in_array('ROLE_USER',$roles,true) || in_array('ROLE_DOCTOR',$roles,true)){
-            return $this->json([
-                'status' => 401,
-                'message' => 'Access denied'
-            ],401);
+
+        return $this->render('survey/edit.html.twig', [
+            'survey' => $survey,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="survey_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Survey $survey): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$survey->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($survey);
+            $entityManager->flush();
         }
-        $manager->remove($survey);
-        $manager->flush();
-        return $this->json([
-            'status' => 201,
-            'message' => 'Survey deleted'
-        ],201);
+
+        return $this->redirectToRoute('survey_index');
     }
 }

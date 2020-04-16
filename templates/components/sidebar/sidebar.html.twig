@@ -1,0 +1,35 @@
+
+{% set current_path = app.request.get('_route') %}
+
+<div class="sidebar" data-color="white" data-active-color="danger">
+    <div class="logo">
+        <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+            <!-- <div class="logo-image-small">
+              <img src="./assets/img/logo-small.png">
+            </div> -->
+            <!-- <p>CT</p> -->
+        </a>
+        <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+            Your Logo
+            <!-- <div class="logo-image-big">
+              <img src="../assets/img/logo-big.png">
+            </div> -->
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <li class="{% if current_path == "profile" %} active {% endif %}">
+                <a href="{{ path('profile')}}">
+                    <i class="nc-icon nc-layout-11"></i>
+                    <p> Dashboard </p>
+                </a>
+            </li>
+            <li class="{% if current_path == "patients" %} active {% endif %}">
+                <a href="{{ path('patients') }}">
+                    <i class="nc-icon nc-badge"></i>
+                    <p>Patients</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
