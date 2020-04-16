@@ -3569,16 +3569,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.14.6",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "bc4df88792fbaaeb275167101dc714218475db5f"
+                "reference": "31396f2e61803f0e2debbb43ba5aa21acbc6e15a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/bc4df88792fbaaeb275167101dc714218475db5f",
-                "reference": "bc4df88792fbaaeb275167101dc714218475db5f",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/31396f2e61803f0e2debbb43ba5aa21acbc6e15a",
+                "reference": "31396f2e61803f0e2debbb43ba5aa21acbc6e15a",
                 "shasum": ""
             },
             "require": {
@@ -3633,7 +3633,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2020-03-04T13:57:29+00:00"
+            "time": "2020-04-05T10:50:59+00:00"
         },
         {
             "name": "symfony/mercure",
@@ -3700,19 +3700,6 @@
             "time": "2019-11-08T19:13:31+00:00"
         },
         {
-<<<<<<< HEAD
-            "name": "symfony/maker-bundle",
-            "version": "v1.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "31396f2e61803f0e2debbb43ba5aa21acbc6e15a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/31396f2e61803f0e2debbb43ba5aa21acbc6e15a",
-                "reference": "31396f2e61803f0e2debbb43ba5aa21acbc6e15a",
-=======
             "name": "symfony/mercure-bundle",
             "version": "0.2.3",
             "source": {
@@ -3724,7 +3711,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/mercure-bundle/zipball/9c5fe6e761816449d84d5f0429e74415cb0590f2",
                 "reference": "9c5fe6e761816449d84d5f0429e74415cb0590f2",
->>>>>>> f5e001fa14f9636f50e40a652257f8080573454f
                 "shasum": ""
             },
             "require": {
@@ -3775,11 +3761,7 @@
                 "sse",
                 "updates"
             ],
-<<<<<<< HEAD
-            "time": "2020-04-05T10:50:59+00:00"
-=======
             "time": "2019-11-24T10:29:29+00:00"
->>>>>>> f5e001fa14f9636f50e40a652257f8080573454f
         },
         {
             "name": "symfony/mime",
