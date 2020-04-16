@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UsersController extends AbstractController
 {
     /**
-     * @Route("/api/users/{id}",name="get_user",methods={"GET"})
+     * @Route("/Api/users/{id}",name="get_user",methods={"GET"})
      */
     public function getUserById ($id,Request $request,UserRepository $userRepository){
 
@@ -43,7 +43,7 @@ class UsersController extends AbstractController
     }
 
     /**
-         * @Route("/api/users/add",name="add_user",methods={"POST"})
+         * @Route("/Api/users/add",name="add_user",methods={"POST"})
      */
     public function addUser (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer){
 
@@ -88,7 +88,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/api/users/{id}",name="delete_users",methods={"DELETE"})
+     * @Route("/Api/users/{id}",name="delete_users",methods={"DELETE"})
      */
     public function deleteUser ($id,Request $request,UserRepository $userRepository,EntityManagerInterface $manager){
         $user = $userRepository->findOneBy(['id' => $id]);
@@ -116,7 +116,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/api/users",name="get_users",methods={"GET"})
+     * @Route("/Api/users",name="get_users",methods={"GET"})
      */
     public function getUsers (UserRepository $userRepository,Request $request){
         $tokenDecoder = new TokenDecoder($request);

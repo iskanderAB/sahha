@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DoctorController extends AbstractController
 {
     /**
-     * @Route("/api/doctor/add",name="add_doctor",methods={"POST"})
+     * @Route("/Api/doctor/add",name="add_doctor",methods={"POST"})
      */
     public function addDoctor (Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
@@ -60,7 +60,7 @@ class DoctorController extends AbstractController
         }
     }
     /**
-     * @Route("/api/doctor/{id}",name="get_doctor",methods={"GET"})
+     * @Route("/Api/doctor/{id}",name="get_doctor",methods={"GET"})
      */
     public function getDoctor ($id,UserRepository $userRepository,Request $request){
 
@@ -83,7 +83,7 @@ class DoctorController extends AbstractController
         return $this->json($user,200,[],['groups' => 'Read']);
     }
     /**
-     * @Route("/api/doctor/{id}",name="delete_doctor",methods={"DELETE"})
+     * @Route("/Api/doctor/{id}",name="delete_doctor",methods={"DELETE"})
      */
     public function deleteDoctor ($id,UserRepository $userRepository,EntityManagerInterface $manager,Request $request){
         $user = $userRepository->findOneBy(['id' => $id]);
@@ -111,7 +111,7 @@ class DoctorController extends AbstractController
     }
 
     /**
-     * @Route("/api/doctors",name="get_doctors",methods={"GET"})
+     * @Route("/Api/doctors",name="get_doctors",methods={"GET"})
      */
     public function getDoctors (Request $request,UserRepository $userRepository){
         $tokenDecoder = new TokenDecoder($request);
@@ -127,7 +127,7 @@ class DoctorController extends AbstractController
     }
     /*
     /**
-     * @Route("/api/doctor/{id}",name="edit_doctor",name="{"PUT"})
+     * @Route("/Api/doctor/{id}",name="edit_doctor",name="{"PUT"})
      */
     /*
     public function editDoctor ($id,Request $request,UserRepository $userRepository)
