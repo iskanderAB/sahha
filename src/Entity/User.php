@@ -22,7 +22,7 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $id;
 
@@ -30,7 +30,7 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
      * @Assert\NotBlank()
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $email;
 
@@ -52,21 +52,20 @@ class User implements UserInterface,JWTUserInterface
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $firstName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $lastName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=true, length=50)
-     * @Groups({"Read"})
      */
     private $Birthday;
 

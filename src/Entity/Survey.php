@@ -16,13 +16,13 @@ class Survey
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read_survey"})
+     * @Groups({"read_survey","readAnswer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read_survey"})
+     * @Groups({"read_survey","readAnswer"})
      */
     private $createdAt;
 
