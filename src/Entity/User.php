@@ -16,13 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"})
  */
-class User implements UserInterface,JWTUserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $id;
 
@@ -30,7 +30,7 @@ class User implements UserInterface,JWTUserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
      * @Assert\NotBlank()
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $email;
 
@@ -52,21 +52,20 @@ class User implements UserInterface,JWTUserInterface
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $firstName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey"})
+     * @Groups({"Read","read_survey","readAnswer"})
      */
     private $lastName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=true, length=50)
-     * @Groups({"Read"})
      */
     private $Birthday;
 
@@ -90,7 +89,7 @@ class User implements UserInterface,JWTUserInterface
      * @Assert\Positive()
      * @Assert\Length(min="8",max="8")
      * @ORM\Column(type="integer", nullable=true, length=8)
-     * @Groups({"Read"})
+     * @Groups({"Read","readAnswer"})
      */
     private $PhoneNumber;
 
@@ -115,10 +114,6 @@ class User implements UserInterface,JWTUserInterface
     {
         $this->surveys = new ArrayCollection();
         $this->content = new ArrayCollection();
-
-//        $this->username = $username;
-//        $this->roles = $roles;
-//        $this->email = $email;
 
     }
 
@@ -313,17 +308,6 @@ class User implements UserInterface,JWTUserInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function createFromPayload($email, array $payload)
-    {
-        return new self(
-            $payload['roles'], // Added by default
-            $payload['email']  // Custom
-        );
     }
 
     /**
