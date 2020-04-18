@@ -3,7 +3,7 @@
 (function () {
     const origin = window.location.origin;
     const defaultTopic = origin + '/demo/books/1.jsonld';
-    const defaultJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJmb28iLCJiYXIiXSwicHVibGlzaCI6WyJmb28iXX19.afLx2f2ut3YgNVFStCx95Zm_UND1mZJ69OenXaDuZL8';
+    const defaultJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJmb28iLCJiYXIiXSwicHVibGlzaCI6WyJmb28iXX19.LRLvirgONK13JgacQ_VbcjySbVhkSmHy3IznH3tA9PM';
 
     const settingsForm = document.forms.settings;
     const discoverForm = document.forms.discover;
@@ -28,7 +28,7 @@
 
     // Set default values
     document.addEventListener('DOMContentLoaded', function () {
-        settingsForm.hubUrl.value = origin + '/.well-known/mercure';
+        settingsForm.hubUrl.value = origin + '/hub';
         settingsForm.jwt.value = defaultJwt;
 
         discoverForm.topic.value = defaultTopic;
@@ -42,8 +42,7 @@
         }, null, 2);
 
         document.getElementById('subscribeTopicsExamples').innerText = `${origin}/demo/novels/{id}.jsonld
-${defaultTopic}
-foo`;
+${defaultTopic}`;
     });
 
     // Discover

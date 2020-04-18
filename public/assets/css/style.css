@@ -42,3 +42,18 @@
 .no-hovred:hover{
     background-color: white !important;
 }
+#notif{
+    box-sizing: border-box;
+    background-color: #df0000;
+    color: white;
+    height: 20px;
+    width: 10px;
+    font-size: 10px;
+    font-weight:bold;
+    margin-left: 10px;
+    bottom: 68%;
+    padding : 0 0 1px 1px;
+    vertical-align: center;
+    position: absolute;
+    border-radius: 5px;
+}

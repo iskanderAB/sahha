@@ -11,17 +11,21 @@ use App\Services\TokenDecoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 class SurveysController extends AbstractController
 {
     /**
      * @Route("/api/survey/add",name="add_survey",methods={"POST"})
      */
-    public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager){
+    public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager,MessageBusInterface $bus){
         $data = $request->getContent();
+
         try {
             $tokenDecoder = new TokenDecoder($request);
             $roles = $tokenDecoder->getRoles();
@@ -37,11 +41,12 @@ class SurveysController extends AbstractController
             $survey->setCreatedBy($user);
             $manager->persist($survey);
             $manager->flush();
+            $update = new Update("http://127.0.0.1:8001/",$serializer->serialize($survey,"json",['groups' => 'read_survey']));
+            $bus->dispatch($update);
             return $this->json([
                 'status' => 201,
                 'message' => 'Survey created'
             ],201);
-
         }catch (NotEncodableValueException $exception){
             return $this->json([
                 'status' => 400,
@@ -49,7 +54,6 @@ class SurveysController extends AbstractController
             ], 400);
         }
     }
-
     /**
      * @Route("/api/surveys",name="get_surveys",methods={"GET"})
      */
@@ -73,7 +77,6 @@ class SurveysController extends AbstractController
             ],400);
         }
     }
-
     /**
      * @Route("/api/survey/delete/{id}",name="delete",methods={"DELETE"})
      */

@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\AnswerType;
 use App\Form\SurveyType;
 use App\Repository\AnswerRepository;
+use App\Repository\SurveyRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +23,12 @@ class ProfileController extends AbstractController
     /**
      * @Route("/", name="profile")
      */
-    public function index(UserRepository $user)
+    public function index(UserRepository $user,SurveyRepository $surveys)
     {
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
             'users' => $user->findUsersByRole("ROLE_USER"),
+            'surveys' => count($surveys->findAll()),
         ]);
     }
 

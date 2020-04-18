@@ -39,6 +39,7 @@ class Survey
     private $createdBy;
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read_survey"})
      */
     private $feedback;
 
@@ -110,28 +111,23 @@ class Survey
 
         return $this;
     }
-
     public function getFeedback(): ?string
     {
         return $this->feedback;
     }
-
     public function setFeedback(?string $feedback): self
     {
         $this->feedback = $feedback;
 
         return $this;
     }
-
     public function getAnswer(): ?Answer
     {
         return $this->answer;
     }
-
     public function setAnswer(?Answer $answer): self
     {
         $this->answer = $answer;
-
         // set (or unset) the owning side of the relation if necessary
         $newSurvey = null === $answer ? null : $this;
         if ($answer->getSurvey() !== $newSurvey) {

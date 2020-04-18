@@ -13,7 +13,7 @@
             <th>
             </th>
             </thead>
-            <tbody>
+            <tbody id="tab">
             {% for user in users  %}
                 {%  for survey in user.surveys %}
             <tr>
@@ -37,5 +37,26 @@
             </tbody>
         </table>
     </div>
-
+  {% block dinamycAdd %}
+      let q = "{{ surveys }}" ;
+      let d = JSON.parse(e.data);
+      let row1 = mytab.insertRow(0);
+      let cell3= row1.insertCell(0);
+      cell3.innerHTML =`Question ${(Number(q) +notif)} :`;
+      cell3.setAttribute("colspan",'4');
+      let row2 = mytab.insertRow(1);
+      let cell1 = row2.insertCell(0);
+      let cell2 = row2.insertCell(1);
+      cell1.innerHTML= `${d.feedback}`;
+      let i =document.createElement('i');
+      let button = document.createElement("a");
+      cell2.appendChild(i);
+      cell2.appendChild(button);
+      cell2.style.textAlign="right";
+      i.setAttribute('class',"nc-icon nc-sound-wave");
+      button.setAttribute("class","btn btn-sm btn-danger");
+      button.setAttribute("style","border-radius: 100px; background-color: #cc0b00;color: white;");
+      button.setAttribute("href",`/profile/${d.id}/answer`)
+      button.innerText="répondre";
+      {% endblock %}
 {% endblock %}

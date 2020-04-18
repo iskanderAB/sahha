@@ -395,7 +395,7 @@ demo = {
       message: m
     }, {
       type: color,
-      timer: 8000,
+      timer: 3000,
       placement: {
         from: from,
         align: align

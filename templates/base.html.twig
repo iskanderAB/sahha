@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<html>
-<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -63,7 +61,10 @@
                         <li class="nav-item btn-rotate dropdown">
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="nc-icon nc-bell-55"></i>
+                                {% if  users is not null %}
+                                <i id="notif">0</i>
+                                {%  endif %}
+                                <i class="nc-icon nc-bell-55" style="font-size: 16px;top: 4px"></i>
                                 <p>
                                     <span class="d-lg-none d-md-block">Some Actions</span>
                                 </p>
@@ -97,6 +98,8 @@
         {{ include('components/footer/footer.html.twig') }}
     </div>
 </div>
+{% block javascripts %}
+
 <script src="/assets/js/core/jquery.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
@@ -108,6 +111,20 @@
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="/assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
 <script src="../assets/demo/demo.js"></script>
+<script>
+    const u = new URL('http://localhost:3000/hub');
+    let mytab = document.getElementById('tab');
+    u.searchParams.append('topic', 'http://127.0.0.1:8001/');
+    const es = new EventSource(u);
+    let notif = 0 ;
+    es.onmessage = e => {
+         notif ++ ;
+         demo.showNotification('top','center',e.data);
+         document.getElementById('notif').innerText= notif ;
+        {% block dinamycAdd %}
+        {% endblock %}
+    }
+</script>
 {% for message in app.flashes('notice') %}
     <div class="flash-notice">
         <script>
@@ -115,6 +132,6 @@
         </script>
     </div>
 {% endfor %}
-
+{% endblock %}
 </body>
 </html>

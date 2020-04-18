@@ -36,6 +36,7 @@ security:
             anonymous: lazy
             stateless: false
             provider: app_user_provider
+            access_denied_handler: App\Security\AccessDeniedHandler
             guard:
                 authenticators:
                     - App\Security\AppCustomAuthenticator
@@ -47,3 +48,4 @@ security:
     access_control:
         - { path: ^/api/login,         roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,               roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/profile ,          roles: ROLE_SUPER_ADMIN }
