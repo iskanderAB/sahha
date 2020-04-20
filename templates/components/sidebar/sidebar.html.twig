@@ -9,8 +9,8 @@
             </div> -->
             <!-- <p>CT</p> -->
         </a>
-        <a href="https://www.creative-tim.com" class="simple-text logo-normal">
-            Your Logo
+        <a href="{{ path('profile') }}" class="simple-text logo-normal">
+           وزارة الصحة
             <!-- <div class="logo-image-big">
               <img src="../assets/img/logo-big.png">
             </div> -->
@@ -18,6 +18,12 @@
     </div>
     <div class="sidebar-wrapper">
         <ul class="nav">
+            <li class="{% if current_path == "user_show" %} active {% endif %}">
+                <a href="{{ path('user_show',{'id':app.user.id})}}">
+                    <i class="nc-icon nc-circle-10"></i>
+                    <p> MY profile  </p>
+                </a>
+            </li>
             <li class="{% if current_path == "profile" %} active {% endif %}">
                 <a href="{{ path('profile')}}">
                     <i class="nc-icon nc-layout-11"></i>
@@ -28,6 +34,24 @@
                 <a href="{{ path('patients') }}">
                     <i class="nc-icon nc-badge"></i>
                     <p>Patients</p>
+                </a>
+            </li>
+            <li class="{% if current_path == "user_doctor_new" %} active {% endif %}">
+                <a href="{{ path('user_doctor_new') }}">
+                    <i class="nc-icon nc-single-02"></i>
+                    <p>add doctor </p>
+                </a>
+            </li>
+            <li class="">
+                <a href="#">
+                    <i class="nc-icon nc-chat-33"></i>
+                    <p>add conversarion  </p>
+                </a>
+            </li>
+            <li class="{% if current_path == "user_new" %} active {% endif %}">
+                <a href="{{path('user_new')}}">
+                    <i class="nc-icon nc-badge"></i>
+                    <p>add Patient </p>
                 </a>
             </li>
         </ul>

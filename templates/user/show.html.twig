@@ -3,60 +3,82 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <div class="card-header">
+        <h5 class="card-title">Edit Profile</h5>
+    </div>
+    <div class="card-body">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-3 pr-1">
+                <div class="form-group">
+                    <label>Your ID </label>
+                    <input type="text" class="form-control" name="id" disabled="" placeholder="Company"
+                           value="{{ app.user.id }}">
+                </div>
+            </div>
+            <div class="col-md-7 pl-1">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    {{ form_widget(form.email, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>First Name</label>
+                    {{ form_widget(form.firstName, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Last Name</label>
+                    {{ form_widget(form.lastName, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Address</label>
+                    {{ form_widget(form.Address, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Gouvernorate</label>
+                    {{ form_widget(form.Gouvernorate, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Birthday</label>
+                    {{ form_widget(form.Birthday, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Phone number</label>
+                    {{ form_widget(form.PhoneNumber, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Birthday</th>
-                <td>{{ user.Birthday }}</td>
-            </tr>
-            <tr>
-                <th>Gouvernorate</th>
-                <td>{{ user.Gouvernorate }}</td>
-            </tr>
-            <tr>
-                <th>Gender</th>
-                <td>{{ user.Gender }}</td>
-            </tr>
-            <tr>
-                <th>PhoneNumber</th>
-                <td>{{ user.PhoneNumber }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ user.Address }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Gender</label>
+                    {{ form_widget(form.Gender, {'attr': {'type': 'email','class':'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="update ml-auto mr-auto">
+                <button type="submit" class="btn btn-danger btn-round">Update Profile</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

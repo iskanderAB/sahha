@@ -588,8 +588,8 @@ Copyright (c) 2015 Daniel Eden
   fieldset[disabled] .btn-danger.focus,
   fieldset[disabled] .btn-danger:active,
   fieldset[disabled] .btn-danger.active {
-    background-color: #ef8157;
-    border-color: #ef8157; }
+    background-color: darkred;
+    border-color: darkred; }
   .btn-danger.btn-simple {
     color: #ef8157;
     border-color: #ef8157; }

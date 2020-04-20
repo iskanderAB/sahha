@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New User{% endblock %}
-
+{% set current_path = path(app.request.get('_route')) %}
 {% block body %}
-    <h1>Create new User</h1>
-
+    <h1>{% if current_path == "user_new"   %}Add new Patient{% else  %}Add new Doctor{% endif %}</h1>
     {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('user_index') }}">back to list</a>
 {% endblock %}

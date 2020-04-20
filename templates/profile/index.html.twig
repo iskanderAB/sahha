@@ -17,7 +17,7 @@
             {% for user in users  %}
                 {%  for survey in user.surveys %}
             <tr>
-                <td colspan="4" style="border-bottom:0px #ffffff "> Question 1 :</td>
+                <td colspan="4" style="border-bottom:0px #ffffff "> Question {{ 1+ (user.surveys|length) -  loop.index }} :</td>
             </tr>
             <tr>
                 <td>
@@ -37,6 +37,7 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
   {% block dinamycAdd %}
       let q = "{{ surveys }}" ;
       let d = JSON.parse(e.data);
@@ -58,5 +59,4 @@
       button.setAttribute("style","border-radius: 100px; background-color: #cc0b00;color: white;");
       button.setAttribute("href",`/profile/${d.id}/answer`)
       button.innerText="répondre";
-      {% endblock %}
-{% endblock %}
+  {% endblock %}
