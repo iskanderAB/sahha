@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Services\TokenDecoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,19 +21,19 @@ class UsersController extends AbstractController
     /**
      * @Route("/api/users/{id}",name="get_user",methods={"GET"})
      */
-    public function getUserById ($id,Request $request,UserRepository $userRepository){
+    public function getUserById ($id,Request $request,UserRepository $userRepository):JsonResponse{
 
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user || in_array('ROLE_DOCTOR',$user->getRoles(),true) || in_array('ROLE_SUPER_ADMIN',$user->getRoles(),true)){
             return $this->json([
                 'status' => 404,
-                'message' => 'User not found !',
+                'message' =>'User not found !',
             ],404);
         }
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
 
-        if(!in_array('ROLE_SUPER_ADMIN', $roles, true)){
+        if(!in_array('ROLE_SUPER_ADMIN',$roles,true)){
             return $this->json([
                 'message' => 'Access Denied !',
                 'status' => 403
@@ -45,7 +46,7 @@ class UsersController extends AbstractController
     /**
          * @Route("/api/users/add",name="add_user",methods={"POST"})
      */
-    public function addUser (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer){
+    public function addUser (Request $request,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator,EntityManagerInterface $manager,SerializerInterface $serializer):JsonResponse{
 
         $data = $request->getContent();
         try {
@@ -90,7 +91,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/api/users/{id}",name="delete_users",methods={"DELETE"})
      */
-    public function deleteUser ($id,Request $request,UserRepository $userRepository,EntityManagerInterface $manager){
+    public function deleteUser ($id,Request $request,UserRepository $userRepository,EntityManagerInterface $manager):JsonResponse{
         $user = $userRepository->findOneBy(['id' => $id]);
         if(!$user || in_array('ROLE_DOCTOR',$user->getRoles(),true) || in_array('ROLE_SUPER_ADMIN',$user->getRoles(),true)){
             return $this->json([
@@ -118,7 +119,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/api/users",name="get_users",methods={"GET"})
      */
-    public function getUsers (UserRepository $userRepository,Request $request){
+    public function getUsers (UserRepository $userRepository,Request $request):JsonResponse{
         $tokenDecoder = new TokenDecoder($request);
         $roles = $tokenDecoder->getRoles();
         if (!in_array('ROLE_SUPER_ADMIN',$roles,true) && !in_array('ROLE_DOCTOR',$roles,true)){

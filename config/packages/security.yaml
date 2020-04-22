@@ -44,11 +44,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-
     access_control:
         - { path: ^/api/login,         roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
         - { path: ^/api,               roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/profile ,          roles: ROLE_SUPER_ADMIN }
-        - { path: ^/api,               roles: IS_AUTHENTICATED_ANONYMOUSLY }
-

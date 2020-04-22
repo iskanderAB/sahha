@@ -9,6 +9,7 @@ use App\Repository\SurveyRepository;
 use App\Repository\UserRepository;
 use App\Services\TokenDecoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,7 +21,7 @@ class AnswerController extends AbstractController
     /**
      * @Route("/api/answer",name="getAnswer",methods={"GET"})
      */
-    public function getAnswers (Request $request,SurveyRepository $surveyRepository,UserRepository $userRepository,SerializerInterface $serializer,AnswerRepository $answerRepository)
+    public function getAnswers (Request $request,SurveyRepository $surveyRepository,UserRepository $userRepository,SerializerInterface $serializer,AnswerRepository $answerRepository):JsonResponse
     {
         $data = $request->getContent();
         try {

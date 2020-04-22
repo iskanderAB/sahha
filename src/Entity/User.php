@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -30,7 +29,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()
      * @Assert\NotBlank()
-     * @Groups({"Read","read_survey","readAnswer"})
+     * @Groups({"Read","read_survey","readAnswer","read_story"})
      */
     private $email;
 
@@ -52,14 +51,14 @@ class User implements UserInterface
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey","readAnswer"})
+     * @Groups({"Read","read_survey","readAnswer","read_story"})
      */
     private $firstName;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"Read","read_survey","readAnswer"})
+     * @Groups({"Read","read_survey","readAnswer","read_story"})
      */
     private $lastName;
 
@@ -110,10 +109,16 @@ class User implements UserInterface
      */
     private $content;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SuccessStory", mappedBy="createdBy")
+     */
+    private $successStories;
+
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
         $this->content = new ArrayCollection();
+        $this->successStories = new ArrayCollection();
 
     }
 
@@ -335,6 +340,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($content->getFromDoctor() === $this) {
                 $content->setFromDoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SuccessStory[]
+     */
+    public function getSuccessStories(): Collection
+    {
+        return $this->successStories;
+    }
+
+    public function addSuccessStory(SuccessStory $successStory): self
+    {
+        if (!$this->successStories->contains($successStory)) {
+            $this->successStories[] = $successStory;
+            $successStory->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuccessStory(SuccessStory $successStory): self
+    {
+        if ($this->successStories->contains($successStory)) {
+            $this->successStories->removeElement($successStory);
+            // set the owning side to null (unless already changed)
+            if ($successStory->getCreatedBy() === $this) {
+                $successStory->setCreatedBy(null);
             }
         }
 

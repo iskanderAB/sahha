@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use App\Services\TokenDecoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -23,7 +24,7 @@ class SurveysController extends AbstractController
     /**
      * @Route("/api/survey/add",name="add_survey",methods={"POST"})
      */
-    public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager,MessageBusInterface $bus){
+    public function addSurvey (Request $request,UserRepository $userRepository,SerializerInterface $serializer,EntityManagerInterface $manager,MessageBusInterface $bus):JsonResponse{
         $data = $request->getContent();
 
         try {
@@ -57,7 +58,7 @@ class SurveysController extends AbstractController
     /**
      * @Route("/api/surveys",name="get_surveys",methods={"GET"})
      */
-    public function getSurveys (Request $request,SurveyRepository $surveyRepository,SerializerInterface $serializer){
+    public function getSurveys (Request $request,SurveyRepository $surveyRepository):JsonResponse{
         $data = $request->getContent();
         try {
             $tokenDecoder = new TokenDecoder($request);
@@ -80,7 +81,7 @@ class SurveysController extends AbstractController
     /**
      * @Route("/api/survey/delete/{id}",name="delete",methods={"DELETE"})
      */
-    public function deleteSurvey ($id,Request $request,SurveyRepository $surveyRepository,EntityManagerInterface $manager){
+    public function deleteSurvey ($id,Request $request,SurveyRepository $surveyRepository,EntityManagerInterface $manager):JsonResponse{
         $data = $request->getContent();
         $survey = $surveyRepository->findOneBy(['id' => $id]);
         if(!$survey){
