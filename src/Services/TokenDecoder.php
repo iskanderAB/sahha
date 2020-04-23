@@ -16,7 +16,7 @@ class TokenDecoder
     }
 
     public function getJWTToken(){
-        $headers = $this->request->headers->get("authorization");
+        $headers = $this->request->headers->get('authorization');
         preg_match('/Bearer\s(\S+)/',$headers,$matches);
         $token =  $matches[1];
         return $tokenParts = explode(".", $token);
@@ -30,11 +30,11 @@ class TokenDecoder
     }
 
     public function getTokenType(){
-        return $this->getHeader()["typ"];
+        return $this->getHeader()['typ'];
     }
 
     public function getTokenAlgorithm(){
-        return $this->getHeader()["alg"];
+        return $this->getHeader()['alg'];
     }
 
     public function getPayload(){
@@ -44,18 +44,18 @@ class TokenDecoder
     }
 
     public function getIssuedAt(){
-        return $this->getPayload()["iat"];
+        return $this->getPayload()['iat'];
     }
 
     public function getExpirationTime(){
-        return $this->getPayload()["exp"];
+        return $this->getPayload()['exp'];
     }
 
     public function getEmail(){
-        return $this->getPayload()["email"];
+        return $this->getPayload()['email'];
     }
 
     public function getRoles(){
-        return $this->getPayload()["roles"];
+        return $this->getPayload()['roles'];
     }
 }

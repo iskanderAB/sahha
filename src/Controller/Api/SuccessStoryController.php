@@ -155,4 +155,44 @@ class SuccessStoryController extends AbstractController
             'status' => 201
         ],201);
     }
+
+    /**
+     * @Route("/api/successstory/accepted/{id}",name="get_success_story",methods={"GET"})
+     * @param SuccessStory|null $successStory
+     * @return JsonResponse
+     */
+    public function getSuccessStory (SuccessStory $successStory = null):JsonResponse
+    {
+        if(!$successStory || !$successStory->getAccepted()){
+            return $this->json([
+                'message' => 'Story not found !',
+                'status' => 404
+            ],404);
+        }
+        return $this->json($successStory,200,[],['groups' => 'read_story']);
+    }
+
+    /**
+     * @Route("/api/successstory/{id}",name="get_success_story",methods={"GET"})
+     * @param SuccessStory|null $successStory
+     * @return JsonResponse
+     */
+    public function getSuccessStoryForAdmin (SuccessStory $successStory = null, Request $request):JsonResponse
+    {
+        if(!$successStory){
+            return $this->json([
+                'message' => 'Story not found !',
+                'status' => 404
+            ],404);
+        }
+        $tokenDecoder = new TokenDecoder($request);
+        $roles = $tokenDecoder->getRoles();
+        if(!in_array('ROLE_DOCTOR',$roles,true) && !in_array('ROLE_SUPER_ADMIN',$roles,true)){
+            return $this->json([
+                'message' => 'Access Denied !',
+                'status' => 403
+            ],403);
+        }
+        return $this->json($successStory,200,[],['groups' => 'read_story']);
+    }
 }
