@@ -17,18 +17,27 @@
             {% for user in users  %}
                 {%  for survey in user.surveys %}
             <tr>
-                <td colspan="4" style="border-bottom:0px #ffffff "> Question {{ 1+ (user.surveys|length) -  loop.index }} :</td>
+                <td colspan="4" style="border-bottom:0px #ffffff;font-family: 'Roboto Mono', monospace;"> patients {{ survey.createdby.lastname }} {{ survey.createdby.firstname }}</td>
             </tr>
             <tr>
                 <td>
+                <div style="text-align:center;">
+                 {% for question in survey.questions %}
+                    <div class="block"><img src='{% if question.response == "yes" %}/assets/img/tick.svg {% else %}/assets/img/cancel.svg{% endif %}' width="10"> {{ question.title }}</div>
+                 {% endfor %}
+                </div>
+                <div style="font-family: 'Lora', serif;text-align:center;margin-top:2em">
                     {{survey.feedback}}
+                </div>
                 </td>
-                <td style="text-align: right">
+                <td style="text-align: right;font-family: 'Lora';">
                     {% if survey.answer == null  %}
                     <i class="nc-icon nc-sound-wave"></i>
-                    <a class="btn btn-sm btn-danger" href="{{ path('DoctorAnswer',{'id':survey.id}) }}" style="border-radius: 100px; background-color: #cc0b00;color: white;">répondre</a>
+                    <a class="btn btn-sm btn-danger" href="{{ path('DoctorAnswer',{'id':survey.id}) }}" style="border-radius: 100px; background-color: #cc0b00;color: white;">reply</a>
                     {% else %}
-                        <img src="/assets/img/shield.svg" width="40">
+                      <i class="nc-icon nc-sound-wave"></i>
+                    <a class="btn btn-sm btn-success" href="{{ path('DoctorAnswer',{'id':survey.id}) }}" style="border-radius: 100px; background-color: #00cc00;color: white;">answered</a>
+                       <!-- <img src="/assets/img/shield.svg" width="40">-->
                     {% endif %}
                 </td>
             </tr>
